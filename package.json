@@ -1,0 +1,32 @@
+{
+  "name": "bullmq-scheduling-system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "build": "tsc",
+    "start:dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node src/app.ts'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@bull-board/api": "^6.3.3",
+    "@bull-board/express": "^6.3.3",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.8.7",
+    "bullmq": "^5.23.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "ioredis": "^5.4.1",
+    "nodemailer": "^6.9.16",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.16",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
+  }
+}
