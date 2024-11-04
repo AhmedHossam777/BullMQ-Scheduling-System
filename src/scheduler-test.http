@@ -1,0 +1,30 @@
+### Schedule a new task
+POST http://localhost:3000/api/v1/scheduler/tasks
+Content-Type: application/json
+
+{
+  "type": "email",
+  "data": {
+    "to": "example@example.com",
+    "subject": "Test Email",
+    "content": "This is a test email."
+  },
+  "scheduledFor": "2024-11-04T12:04:00.147Z",
+  "config": {
+    "attempts": 3,
+    "backoff": {
+      "type": "exponential",
+      "delay": 1000
+    },
+    "removeOnComplete": true
+  }
+}
+
+### Check the status of the scheduled task
+GET http://localhost:3000/api/v1/scheduler/tasks/1
+
+### Simulate server downtime
+# Stop the server manually (Ctrl+C in the terminal where the server is running)
+
+### Check the status of the task after the server is back up
+GET http://localhost:3000/api/v1/scheduler/tasks/1

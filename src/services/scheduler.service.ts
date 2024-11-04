@@ -27,7 +27,6 @@ export class SchedulerService {
 					type: 'exponential',
 					delay: 1000,
 				},
-				removeOnComplete: false,
 			},
 		});
 
@@ -84,7 +83,7 @@ export class SchedulerService {
 		type: TaskType,
 		data: T,
 		scheduledFor: Date,
-		config?: TaskConfig,
+		config?: TaskConfig
 	): Promise<ScheduledTask> {
 		const handler = this.taskHandlers.get(type);
 		if (!handler) {
@@ -110,7 +109,7 @@ export class SchedulerService {
 				backoff: config?.backoff,
 				removeOnComplete: config?.removeOnComplete ?? false,
 				priority: config?.priority,
-			},
+			}
 		);
 
 		return {
@@ -148,23 +147,25 @@ export class SchedulerService {
 			'scheduledTasks',
 			async (job) => {
 				const { type, data } = job.data;
-				const handler = this.taskHandlers.get(type);
+				console.log(new Date());
+				// return;
+				// const handler = this.taskHandlers.get(type);
 
-				if (!handler) {
-					throw new Error(`No handler found for task type: ${type}`);
-				}
+				// if (!handler) {
+				// 	throw new Error(`No handler found for task type: ${type}`);
+				// }
 
-				if (!(await handler.validate(data))) {
-					throw new Error('Task data validation failed');
-				}
+				// if (!(await handler.validate(data))) {
+				// 	throw new Error('Task data validation failed');
+				// }
 
-				await handler.execute(data);
-				this.events.emit('taskCompleted', job.id);
+				// await handler.execute(data);
+				// this.events.emit('taskCompleted', job.id);
 			},
 			{
 				connection: redisConfig,
 				concurrency: 5,
-			},
+			}
 		);
 
 		this.setupWorkerEvents();
@@ -172,7 +173,7 @@ export class SchedulerService {
 
 	private setupWorkerEvents(): void {
 		this.worker.on('completed', async (job: Job) => {
-			await this.updateTaskStatus(job.id as string, TaskStatus.COMPLETED);
+			// await this.updateTaskStatus(job.id as string, TaskStatus.COMPLETED);
 			console.log(`Job ${job.id} completed successfully`);
 		});
 
@@ -181,22 +182,24 @@ export class SchedulerService {
 			async (
 				job: Job<any, any, string> | undefined,
 				error: Error,
-				prev: string,
+				prev: string
 			) => {
 				if (job) {
-					await this.updateTaskStatus(job.id as string, TaskStatus.FAILED);
+					// await this.updateTaskStatus(job.id as string, TaskStatus.FAILED);
 					console.error(`Job ${job.id} failed:`, error);
 				}
-			},
+			}
 		);
 
 		this.worker.on(
 			'progress',
 			(job: Job<any, any, string>, progress: number | object) => {
 				console.log(
-					`Job ${job.id} progress: ${typeof progress === 'number' ? progress : JSON.stringify(progress)}%`,
+					`Job ${job.id} progress: ${
+						typeof progress === 'number' ? progress : JSON.stringify(progress)
+					}%`
 				);
-			},
+			}
 		);
 	}
 }
